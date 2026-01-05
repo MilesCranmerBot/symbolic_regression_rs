@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.12.2](https://github.com/astroautomata/symbolic_regression.rs/compare/symbolic_regression-v0.12.1...symbolic_regression-v0.12.2) (2026-01-05)
+
+
+### Performance Improvements
+
+* faster version of rotate_tree_in_place ([9cd093a](https://github.com/astroautomata/symbolic_regression.rs/commit/9cd093a447650daea16e782b457cf01b775e63ac))
+* faster version of rotate_tree_in_place ([a083f10](https://github.com/astroautomata/symbolic_regression.rs/commit/a083f109538f66c38be8473a319b29ffe05ee9dd))
+
 ## [0.12.1](https://github.com/astroautomata/symbolic_regression.rs/compare/symbolic_regression-v0.12.0...symbolic_regression-v0.12.1) (2025-12-30)
 
 
