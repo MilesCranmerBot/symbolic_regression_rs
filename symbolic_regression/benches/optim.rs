@@ -318,7 +318,7 @@ fn bench_utils(c: &mut Criterion) {
         group.bench_function(BenchmarkId::new("compute_complexity_x10", "u16"), |b| {
             b.iter(|| {
                 for tree in &trees {
-                    let _ = symbolic_regression::compute_complexity(&tree.nodes, &options);
+                    std::hint::black_box(symbolic_regression::compute_complexity(&tree.nodes, &options));
                 }
             })
         });
