@@ -58,6 +58,8 @@ jobs:
       - name: Ensure cache directory exists
         run: |
           mkdir -p ./cache
+          # rust-cache restores target/criterion only partly, and criterion then fails to read its own baseline.
+          rm -rf target/criterion
 
       - name: Run benchmarks (dynamic_expressions)
         run: cargo bench -p dynamic_expressions --bench eval -- --output-format bencher | tee output-dynamic-expressions.txt
