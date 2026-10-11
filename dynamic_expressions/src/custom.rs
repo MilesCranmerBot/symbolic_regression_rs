@@ -8,6 +8,8 @@ use crate::traits::OpMeta;
 /// Runtime operators appended after an operator set's built-ins. `local` ids start at 0; the
 /// operator set adds its built-in count to form the global id.
 pub trait CustomTable<T: Float>: Clone + Default + core::fmt::Debug + Send + Sync {
+    /// Guarantees that every entry returned by `meta` has complexity 1.
+    const UNIT_COMPLEXITY: bool = false;
     fn max_arity(&self) -> u8;
     fn ids_with_arity(&self, arity: u8) -> impl Iterator<Item = u16> + '_;
     /// `id` in the returned metadata is the local id.
@@ -30,6 +32,8 @@ pub trait CustomTable<T: Float>: Clone + Default + core::fmt::Debug + Send + Syn
 pub struct NoCustom;
 
 impl<T: Float> CustomTable<T> for NoCustom {
+    const UNIT_COMPLEXITY: bool = true;
+
     #[inline]
     fn max_arity(&self) -> u8 {
         0

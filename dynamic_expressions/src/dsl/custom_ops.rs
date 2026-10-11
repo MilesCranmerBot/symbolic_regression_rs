@@ -118,6 +118,8 @@ where
 }
 
 impl<T: DslFloat> CustomTable<T> for CustomOps<T> {
+    const UNIT_COMPLEXITY: bool = true;
+
     fn max_arity(&self) -> u8 {
         self.lowered.iter().map(|l| l.arity).max().unwrap_or(0)
     }

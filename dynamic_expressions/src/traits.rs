@@ -67,6 +67,9 @@ pub enum LookupError {
 pub trait OperatorSet: Sized {
     type T: Float;
 
+    /// Guarantees unit complexity for every registered operator, including runtime operators.
+    const UNIT_COMPLEXITY: bool = false;
+
     fn max_arity(&self) -> u8;
 
     fn ops_with_arity(&self, arity: u8) -> impl Iterator<Item = u16> + '_;

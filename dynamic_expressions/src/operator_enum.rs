@@ -758,6 +758,17 @@ macro_rules! opset {
         impl<C: $crate::custom::CustomTable<$t>> $crate::traits::OperatorSet for $Ops<C> {
             type T = $t;
 
+            const UNIT_COMPLEXITY: bool = C::UNIT_COMPLEXITY && {
+                let metadata = &$crate::paste::paste! { [<__opset_ $Ops>]::META };
+                let mut unit = true;
+                let mut i = 0;
+                while i < metadata.len() {
+                    unit = unit && metadata[i].complexity == 1;
+                    i += 1;
+                }
+                unit
+            };
+
             #[inline]
             fn max_arity(&self) -> u8 {
                 let builtin = $crate::paste::paste! { [<__opset_ $Ops>]::MAX_ARITY };

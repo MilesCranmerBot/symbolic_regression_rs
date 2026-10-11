@@ -420,17 +420,19 @@ macro_rules! __define_wasm_options_shim {
 sr_options_spec!(__define_wasm_options_shim);
 
 impl<T: Float, Ops: dynamic_expressions::OperatorSet, const D: usize> Options<T, Ops, D> {
+    #[inline]
     pub fn uses_default_complexity(&self) -> bool {
         self.complexity_of_constants == 1.0
             && self.complexity_of_variables == 1.0
             && self.variable_complexities.is_none()
             && self.operator_complexity_overrides.is_empty()
-            && self
-                .operators
-                .ops_by_arity
-                .iter()
-                .flatten()
-                .all(|&op| self.operators.set.complexity(op) == 1)
+            && (Ops::UNIT_COMPLEXITY
+                || self
+                    .operators
+                    .ops_by_arity
+                    .iter()
+                    .flatten()
+                    .all(|&op| self.operators.set.complexity(op) == 1))
     }
 
     /// SymbolicRegression.jl's `max_features`: the features a tree may use, the widest
