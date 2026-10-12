@@ -20,6 +20,7 @@ fn options() -> Options<f64, Ops, 2> {
         operators: BuiltinOpsF64::new().from_names(["+", "sub", "*"]).unwrap(),
         seed: Some(0),
         deterministic: true,
+        parallelism: Parallelism::Serial,
         niterations: 40,
         populations: 8,
         maxsize: 12,
@@ -118,8 +119,7 @@ fn strided_weights_score_like_contiguous_ones() {
             .map(|m| m.loss)
             .collect::<Vec<_>>()
     };
-    let pool = rayon::ThreadPoolBuilder::new().num_threads(1).build().unwrap();
-    pool.install(|| assert_eq!(run(strided), run(Array1::from(contiguous))));
+    assert_eq!(run(strided), run(Array1::from(contiguous)));
 }
 
 #[test]
