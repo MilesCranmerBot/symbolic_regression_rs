@@ -251,7 +251,7 @@ where
         let need_inline = usable_threads == 0;
         let n_workers = usable_threads.min(self.pools.pops.len()).max(1);
 
-        let completed_total = rayon::scope(|scope| {
+        let completed_total = rayon::in_place_scope(|scope| {
             let (result_tx, result_rx) = std::sync::mpsc::channel::<SearchTaskResult<T, Ops, D>>();
             let mut in_flight = 0usize;
             let mut completed_total = 0usize;
