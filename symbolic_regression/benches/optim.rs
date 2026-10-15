@@ -41,7 +41,7 @@ fn random_leaf<R: Rng>(rng: &mut R, n_features: usize, consts: &mut Vec<T>) -> P
 
 fn random_expr<Ops2, const D2: usize, R: Rng>(
     rng: &mut R,
-    operators: &Operators<D2>,
+    operators: &Operators<Ops, D2>,
     n_features: usize,
     target_size: usize,
 ) -> PostfixExpr<T, Ops2, D2> {
@@ -89,16 +89,20 @@ fn random_expr<Ops2, const D2: usize, R: Rng>(
     PostfixExpr::new(nodes, consts, Default::default())
 }
 
-fn make_ops_search() -> Operators<D> {
-    Ops::from_names(["exp", "abs", "+", "sub", "*", "/"]).expect("search operators")
+fn make_ops_search() -> Operators<Ops, D> {
+    Ops::new()
+        .from_names(["exp", "abs", "+", "sub", "*", "/"])
+        .expect("search operators")
 }
 
-fn make_ops_utils() -> Operators<D> {
-    Ops::from_names(["sin", "cos", "+", "sub", "*", "/"]).expect("utils operators")
+fn make_ops_utils() -> Operators<Ops, D> {
+    Ops::new()
+        .from_names(["sin", "cos", "+", "sub", "*", "/"])
+        .expect("utils operators")
 }
 
-fn make_search_options(seed: u64) -> Options<T, D> {
-    let mut options = Options::<T, D> {
+fn make_search_options(seed: u64) -> Options<T, Ops, D> {
+    let mut options = Options::<T, Ops, D> {
         seed,
         niterations: 30,
         populations: 1,
@@ -113,8 +117,8 @@ fn make_search_options(seed: u64) -> Options<T, D> {
     options
 }
 
-fn make_utils_options() -> Options<T, D> {
-    Options::<T, D> {
+fn make_utils_options() -> Options<T, Ops, D> {
+    Options::<T, Ops, D> {
         operators: make_ops_utils(),
         progress: false,
         ..Default::default()
@@ -166,7 +170,7 @@ fn make_random_dataset(seed: u64, n_rows: usize, n_features: usize) -> Dataset<T
 fn make_population(
     seed: u64,
     dataset: &Dataset<T>,
-    options: &Options<T, D>,
+    options: &Options<T, Ops, D>,
     pop_size: usize,
     tree_size: usize,
 ) -> (Population<T, Ops, D>, RunningSearchStatistics) {
